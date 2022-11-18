@@ -16,7 +16,7 @@ namespace tutaws
 		static DB()
 		{
 			int a = 0;
-			int b = 0;
+			int c = 0;
 			var config = new AppConfig();
 			config.AwsAccessKey = "AKIA5NEAXENLQJ43PY23";
 			config.AwsRegion = "ap-south-1";
