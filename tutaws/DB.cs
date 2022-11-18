@@ -8,13 +8,13 @@ using Amazon.Runtime;
 
 namespace tutaws
 {
-	
-    public 	class DB
+
+	public class DB
 	{
 		public static AmazonDynamoDBClient client = new AmazonDynamoDBClient();
 		private static string tableName = "ProductCatalog1";
 		static DB()
-        {
+		{
 			int a = 0;
 			int b = 0;
 			var config = new AppConfig();
@@ -24,8 +24,8 @@ namespace tutaws
 			var client = CreateClient(config);
 			var table = Table.LoadTable(client, new TableConfig("ProductCatalog1"));
 		}
-        static void Main(string[] args)
-        {
+		static void Main(string[] args)
+		{
 			GetallItems();
 			//	CreateItem();
 			//GetItem();
@@ -34,8 +34,8 @@ namespace tutaws
 
 		}
 
-        private static void GetItem()
-        {
+		private static void GetItem()
+		{
 			var request = new GetItemRequest
 			{
 				TableName = tableName,
@@ -50,7 +50,7 @@ namespace tutaws
 			var response2 = auth.S;
 		}
 
-        public static AmazonDynamoDBClient CreateClient(AppConfig appConfig)
+		public static AmazonDynamoDBClient CreateClient(AppConfig appConfig)
 		{
 			var dynamoDbConfig = new AmazonDynamoDBConfig
 			{
@@ -131,10 +131,10 @@ namespace tutaws
 		  }
 	  }
 			};
-		
-			var resp=client.PutItemAsync(request).Result.HttpStatusCode.ToString();
+
+			var resp = client.PutItemAsync(request).Result.HttpStatusCode.ToString();
 			return resp;
-		
+
 		}
 		public static ProductCatalogue1 GetallItems()
 		{
@@ -151,9 +151,9 @@ namespace tutaws
 			var result = response.Result;
 			var attributeMap = result.Item;
 			ProductCatalogue1 PC = new ProductCatalogue1();
-			 attributeMap.TryGetValue("Id", out var Id);
+			attributeMap.TryGetValue("Id", out var Id);
 			PC.Id = Id.N.ToString();
-			 attributeMap.TryGetValue("Title", out var TiTle);
+			attributeMap.TryGetValue("Title", out var TiTle);
 			PC.Title = TiTle.S;
 			attributeMap.TryGetValue("ISBN", out var isbn);
 			PC.ISBN = isbn.S;
@@ -167,10 +167,10 @@ namespace tutaws
 
 		}
 
-        //private static void PrintItem(Dictionary<string, AttributeValue> attributeMap)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        // Attribute list in the response.
-    }
+		//private static void PrintItem(Dictionary<string, AttributeValue> attributeMap)
+		//{
+		//    throw new NotImplementedException();
+		//}
+		// Attribute list in the response.
+	}
 }
