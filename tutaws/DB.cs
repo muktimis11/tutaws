@@ -167,8 +167,8 @@ namespace tutaws
 			//PrintItem();
 
 		}
-		public static ProductCatalogue1 GetallItems1()
-		{
+		public static ProductCatalogue1  GetallItems1()
+        {
 			var request = new GetItemRequest
 			{
 				TableName = tableName,
