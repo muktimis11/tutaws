@@ -15,6 +15,7 @@ namespace tutaws
 		private static string tableName = "ProductCatalog1";
 		static DB()
         {
+			int a = 0;
 			var config = new AppConfig();
 			config.AwsAccessKey = "AKIA5NEAXENLQJ43PY23";
 			config.AwsRegion = "ap-south-1";
