@@ -167,30 +167,37 @@ namespace tutaws
 			//PrintItem();
 
 		}
-		public static string CreateItem1(string Title, string id)
+		public static ProductCatalogue1 GetallItems1()
 		{
-			var request = new PutItemRequest
+			var request = new GetItemRequest
 			{
-
 				TableName = tableName,
-				Item = new Dictionary<string, AttributeValue>()
-				{
-					{ "Id", new AttributeValue { N = id }},
-					{ "Title", new AttributeValue { S = Title }},
-					{ "ISBN", new AttributeValue { S = "11-11-11-11" }},
-					{ "Price", new AttributeValue { S = "20.00" }},
-					{
-					"Authors",
-					new AttributeValue
-					{ SS = new List<string>{"Author1", "Author2"}   }
-		  }
-	  }
+				Key = new Dictionary<string, AttributeValue>() { { "Id", new AttributeValue { N = "202" } } },
+				ProjectionExpression = "Id, ISBN, Title, Authors",
+				ConsistentRead = true
 			};
+			var response = client.GetItemAsync(request);
+			//var attributeList = response.Item;
+			// Check the response.
+			var result = response.Result;
+			var attributeMap = result.Item;
+			ProductCatalogue1 PC = new ProductCatalogue1();
+			attributeMap.TryGetValue("Id", out var Id);
+			PC.Id = Id.N.ToString();
+			attributeMap.TryGetValue("Title", out var TiTle);
+			PC.Title = TiTle.S;
+			attributeMap.TryGetValue("ISBN", out var isbn);
+			PC.ISBN = isbn.S;
+			attributeMap.TryGetValue("Authors", out var lekhak);
+			PC.Authors = lekhak.SS;
 
-			var resp = client.PutItemAsync(request).Result.HttpStatusCode.ToString();
-			return resp;
+			Console.WriteLine("\nPrinting item after retrieving it ............");
 
+			return PC;
+			//PrintItem();
 		}
+
+
 		//private static void PrintItem(Dictionary<string, AttributeValue> attributeMap)
 		//{
 		//    throw new NotImplementedException();
@@ -198,4 +205,3 @@ namespace tutaws
 		// Attribute list in the response.
 	}
 }
-
