@@ -167,7 +167,30 @@ namespace tutaws
 			//PrintItem();
 
 		}
+		public static string CreateItem1(string Title, string id)
+		{
+			var request = new PutItemRequest
+			{
 
+				TableName = tableName,
+				Item = new Dictionary<string, AttributeValue>()
+				{
+					{ "Id", new AttributeValue { N = id }},
+					{ "Title", new AttributeValue { S = Title }},
+					{ "ISBN", new AttributeValue { S = "11-11-11-11" }},
+					{ "Price", new AttributeValue { S = "20.00" }},
+					{
+					"Authors",
+					new AttributeValue
+					{ SS = new List<string>{"Author1", "Author2"}   }
+		  }
+	  }
+			};
+
+			var resp = client.PutItemAsync(request).Result.HttpStatusCode.ToString();
+			return resp;
+
+		}
 		//private static void PrintItem(Dictionary<string, AttributeValue> attributeMap)
 		//{
 		//    throw new NotImplementedException();
@@ -175,3 +198,4 @@ namespace tutaws
 		// Attribute list in the response.
 	}
 }
+
