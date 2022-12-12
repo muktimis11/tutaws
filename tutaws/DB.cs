@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Amazon;
 using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.DataModel;
 using Amazon.DynamoDBv2.DocumentModel;
 using Amazon.DynamoDBv2.Model;
 using Amazon.Runtime;
@@ -27,7 +28,7 @@ namespace tutaws
 		}
 		static void Main(string[] args)
 		{
-			GetallItems();
+			//GetallItems();
 			//	CreateItem();
 			//GetItem();
 			//	//CreateTableProductCatalog();
@@ -137,29 +138,142 @@ namespace tutaws
 			return resp;
 
 		}
-		public static ProductCatalogue1 GetallItems()
+		//public static ProductCatalogue1 GetallItems(string id1)
+		//{
+		//	var request = new GetItemRequest
+		//	{
+		//		TableName = tableName,
+		//		Key = new Dictionary<string, AttributeValue>() { { "Id", new AttributeValue { N = id1 } } },
+		//		ProjectionExpression = "Id, ISBN, Title, Authors",
+		//		ConsistentRead = true
+		//	};
+		//	var response = client.GetItemAsync(request);
+		//	//var attributeList = response.Item;
+		//	// Check the response.
+		//	var result = response.Result;
+		//	var attributeMap = result.Item;
+		//	ProductCatalogue1 PC = new ProductCatalogue1();
+		//	try
+  //          {
+		//		attributeMap.TryGetValue("Id", out var Id);
+		//		PC.Id = Id.N.ToString();
+		//	}
+  //          catch
+  //          {
+
+  //          }
+		//	try
+		//	{
+		//		attributeMap.TryGetValue("Title", out var TiTle);
+		//		PC.Title = TiTle.S;
+		//	}
+		//	catch
+		//	{
+
+		//	}
+		//	try
+		//	{
+		//		attributeMap.TryGetValue("ISBN", out var isbn);
+		//		PC.ISBN = isbn.S;
+		//	}
+		//	catch
+		//	{
+
+		//	}
+		//	try
+		//	{
+		//		attributeMap.TryGetValue("Authors", out var lekhak);
+		//		PC.Authors = lekhak.SS;
+		//	}
+		//	catch
+		//	{
+
+		//	}
+		//	try
+		//	{
+		//		attributeMap.TryGetValue("Name", out var name);
+		//		PC.Name = name.S;
+		//	}
+		//	catch
+		//	{
+
+		//	}
+
+
+
+
+		//	Console.WriteLine("\nPrinting item after retrieving it ............");
+
+		//	return PC;
+		//	//PrintItem();
+
+		//}
+
+		public static Game GetallItemsss()
 		{
 			var request = new GetItemRequest
 			{
 				TableName = tableName,
-				Key = new Dictionary<string, AttributeValue>() { { "Id", new AttributeValue { N = "202" } } },
-				ProjectionExpression = "Id, ISBN, Title, Authors",
+				Key = new Dictionary<string, AttributeValue>() { { "Id", new AttributeValue { N = "201" } } },
+				ProjectionExpression = "GameId, Gamename, numberofmembers",
 				ConsistentRead = true
 			};
-			var response = client.GetItemAsync(request);
+			var conditions = new List<ScanCondition>();
+			var response = client.ScanAsync<Item > (conditions).GetRemainingAsync();
 			//var attributeList = response.Item;
 			// Check the response.
 			var result = response.Result;
 			var attributeMap = result.Item;
-			ProductCatalogue1 PC = new ProductCatalogue1();
-			attributeMap.TryGetValue("Id", out var Id);
-			PC.Id = Id.N.ToString();
-			attributeMap.TryGetValue("Title", out var TiTle);
-			PC.Title = TiTle.S;
-			attributeMap.TryGetValue("ISBN", out var isbn);
-			PC.ISBN = isbn.S;
-			attributeMap.TryGetValue("Authors", out var lekhak);
-			PC.Authors = lekhak.SS;
+			Game PC = new Game();
+			try
+			{
+				attributeMap.TryGetValue("Gameid", out var Id);
+				int s = Int32.Parse(Id.N);
+				PC.GameId = s;
+			}
+			catch
+			{
+
+			}
+			try
+			{
+				attributeMap.TryGetValue("GameName", out var Gamenam);
+				PC.Gamename = Gamenam.S;
+			}
+			catch
+			{
+
+			}
+			try
+			{
+				attributeMap.TryGetValue("Noofmembers", out var numberofmember);
+				PC.numberofmembers = Int32.Parse(numberofmember.N);
+			}
+			catch
+			{
+
+			}
+			//try
+			//{
+			//	attributeMap.TryGetValue("Authors", out var lekhak);
+			//	PC.Authors = lekhak.SS;
+			//}
+			//catch
+			//{
+
+			//}
+			//try
+			//{
+			//	attributeMap.TryGetValue("Name", out var name);
+			//	PC.Name = name.S;
+			//}
+			//catch
+			//{
+
+			//}
+
+
+
 
 			Console.WriteLine("\nPrinting item after retrieving it ............");
 
@@ -191,40 +305,41 @@ namespace tutaws
 			return resp;
 
 		}
-		public static ProductCatalogue1 GetallItems1()
-		{
-			var request = new GetItemRequest
-			{
-				TableName = tableName,
-				Key = new Dictionary<string, AttributeValue>() { { "Id", new AttributeValue { N = "202" } } },
-				ProjectionExpression = "Id, ISBN, Title, Authors",
-				ConsistentRead = true
-			};
-			var response = client.GetItemAsync(request);
-			//var attributeList = response.Item;
-			// Check the response.
-			var result = response.Result;
-			var attributeMap = result.Item;
-			ProductCatalogue1 PC = new ProductCatalogue1();
-			attributeMap.TryGetValue("Id", out var Id);
-			PC.Id = Id.N.ToString();
-			attributeMap.TryGetValue("Title", out var TiTle);
-			PC.Title = TiTle.S;
-			attributeMap.TryGetValue("ISBN", out var isbn);
-			PC.ISBN = isbn.S;
-			attributeMap.TryGetValue("Authors", out var lekhak);
-			PC.Authors = lekhak.SS;
+        public static ProductCatalogue1 GetallItems1(string id1)
+        {
+            int s = Int32.Parse(id1);
+            var request = new GetItemRequest
+            {
+                TableName = tableName,
+                Key = new Dictionary<string, AttributeValue>() { { "Id", new AttributeValue { N = "id1" } } },
+                ProjectionExpression = "Id, ISBN, Title, Authors",
+                ConsistentRead = true
+            };
+            var response = client.GetItemAsync(request);
+            //var attributeList = response.Item;
+            // Check the response.
+            var result = response.Result;
+            var attributeMap = result.Item;
+            ProductCatalogue1 PC = new ProductCatalogue1();
+            attributeMap.TryGetValue("Id", out var Id);
+            PC.Id = Id.N.ToString();
+            attributeMap.TryGetValue("Title", out var TiTle);
+            PC.Title = TiTle.S;
+            attributeMap.TryGetValue("ISBN", out var isbn);
+            PC.ISBN = isbn.S;
+            attributeMap.TryGetValue("Authors", out var lekhak);
+            PC.Authors = lekhak.SS;
 
-			Console.WriteLine("\nPrinting item after retrieving it ............");
+            Console.WriteLine("\nPrinting item after retrieving it ............");
 
-			return PC;
-			//PrintItem();
-		}
-		//private static void PrintItem(Dictionary<string, AttributeValue> attributeMap)
-		//{
-		//    throw new NotImplementedException();
-		//}
-		// Attribute list in the response.
-	}
+            return PC;
+            //PrintItem();
+        }
+        //private static void PrintItem(Dictionary<string, AttributeValue> attributeMap)
+        //{
+        //    throw new NotImplementedException();
+        //}
+        // Attribute list in the response.
+    }
 }
 
